@@ -39,6 +39,41 @@ class Pessoa:
             print(f'{self} não tem pokemon.')
 
     def escolher_pokemon(self):
+        if self.pokemons:
+            pokemon_escolhido = random.choice(self.pokemons)
+            print(f'{self} escolheu {pokemon_escolhido}!')
+            return pokemon_escolhido
+        else:
+            print('Jogador n tem pokemon.')
+
+    def batalhar(self, inimigo):
+        print(f'{self} incinou batalha com {inimigo}!')
+        inimigo.mostrar_pokemon()
+        pokemon_inimigo = inimigo.escolher_pokemon()
+        pokemon = self.escolher_pokemon()
+
+        if pokemon_inimigo and pokemon:
+            while True:
+                vitoria = pokemon.atacar(pokemon_inimigo)
+                if vitoria:
+                    print(f'{self} venceu a batalha')
+                    break
+                vitoria_inimia = pokemon_inimigo.atacar(pokemon)
+                if vitoria_inimia:
+                    print(f'{inimigo} venceu a batalha')
+                    break
+        else:
+            print('Essa batalha n pode acontecer.')
+
+
+class Player(Pessoa):
+    tipo = 'player'
+
+    def capturar_pokemon(self, pokemon):
+        self.pokemons.append(pokemon)
+        print(f'{self} capturou: {pokemon}!')
+
+    def escolher_pokemon(self):
         self.mostrar_pokemon()
 
         if self.pokemons:
@@ -53,21 +88,6 @@ class Pessoa:
         else:
             print('Jogador n tem pokemon.')
 
-    def batalhar(self, pessoa):
-        print(f'{self} incinou batalha com {pessoa}!')
-        pessoa.mostrar_pokemon()
-        pessoa.escolher_pokemon()
-        self.escolher_pokemon()
-
-
-
-class Player(Pessoa):
-    tipo = 'player'
-
-    def capturar_pokemon(self, pokemon):
-        self.pokemons.append(pokemon)
-        print(f'{self} capturou: {pokemon}!')
-
 
 class Inimigo(Pessoa):
     tipo = 'inimigo'
@@ -81,10 +101,4 @@ class Inimigo(Pessoa):
 
         super().__init__(nome=nome, pokemons=pokemons)
 
-    def escolher_pokemon(self):
-        if self.pokemons:
-            pokemon_escolhido = random.choice(self.pokemons)
-            print(f'{self} escolheu {pokemon_escolhido}!')
-            return pokemon_escolhido
-        else:
-            print('Jogador n tem pokemon.')
+
