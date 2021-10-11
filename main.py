@@ -28,8 +28,9 @@ def escolher_pokemon(player):
 
 
 player = Player()
+player.mostra_dinheiro()
 escolher_pokemon(player)
 player.mostrar_pokemon()
-inimigo = Inimigo()
+inimigo = Inimigo(nome=None, pokemons=[PokemonEletrico('Raichu', lvl=1)])
 player.batalhar(inimigo)
 

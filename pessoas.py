@@ -19,13 +19,15 @@ POKEMONS = [
 
 
 class Pessoa:
-    def __init__(self, nome=None, pokemons=None):
+    def __init__(self, nome=None, pokemons=None, dinheiro=100):
         self.nome = nome
         if pokemons is None:
             pokemons = []
         self.pokemons = pokemons
         if nome is None:
             self.nome = random.choice(NOME)
+
+        self.dinheiro = dinheiro
 
     def __str__(self):
         return self.nome
@@ -46,6 +48,14 @@ class Pessoa:
         else:
             print('Jogador n tem pokemon.')
 
+    def mostra_dinheiro(self):
+        print(f'Voce tem ${self.dinheiro}')
+
+    def ganhar_dinheiro(self, dinheiro):
+        self.dinheiro += dinheiro
+        print(f'Voce obteve ${dinheiro}')
+        self.mostra_dinheiro()
+
     def batalhar(self, inimigo):
         print(f'{self} incinou batalha com {inimigo}!')
         inimigo.mostrar_pokemon()
@@ -57,6 +67,8 @@ class Pessoa:
                 vitoria = pokemon.atacar(pokemon_inimigo)
                 if vitoria:
                     print(f'{self} venceu a batalha')
+                    dinheiro = pokemon_inimigo.lvl * 2
+                    self.ganhar_dinheiro(dinheiro)
                     break
                 vitoria_inimia = pokemon_inimigo.atacar(pokemon)
                 if vitoria_inimia:
@@ -87,6 +99,23 @@ class Player(Pessoa):
                     print('Por favor esolha um pokemon.')
         else:
             print('Jogador n tem pokemon.')
+
+    def exlorar(self):
+        if random.random() <= 0.3:
+            pokemon = random.choice(POKEMONS)
+            print(f'voce encontrou um{pokemon}')
+            escolha = input('Deseja caprturar o pokemon s/n: ')
+            if escolha == 's':
+                if random.random() >= 0.5:
+                    self.capturar_pokemon(pokemon)
+                    print(f'parabens vc capturou {pokemon}')
+                else:
+                    print(f'{pokemon} fugiu!!')
+            else:
+                print('Boa viagem')
+        else:
+            print('Não encontrou nenhum pokemon.')
+            return
 
 
 class Inimigo(Pessoa):
