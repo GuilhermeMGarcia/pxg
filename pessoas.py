@@ -1,5 +1,3 @@
-import random
-
 from pokemon import *
 
 
@@ -103,7 +101,7 @@ class Player(Pessoa):
     def exlorar(self):
         if random.random() <= 0.3:
             pokemon = random.choice(POKEMONS)
-            print(f'voce encontrou um{pokemon}')
+            print(f'voce encontrou um {pokemon}')
             escolha = input('Deseja caprturar o pokemon s/n: ')
             if escolha == 's':
                 if random.random() >= 0.5:

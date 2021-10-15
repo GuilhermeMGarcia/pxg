@@ -33,23 +33,22 @@ def salvar_jogo(player):
     arquivo = "database.db"
     try:
         with open(arquivo, "wb") as obj_arquivo:
-            pickle.dump(arquivo, obj_arquivo)
+            pickle.dump(player, obj_arquivo)
             print('Jogo salvo com sucesso')
     except Exception as error:
         print('Erro ao Salvar o jogo')
         print(error)
 
 
-def carregar_jogo(player):
+def carregar_jogo():
     arquivo = "database.db"
     try:
         with open(arquivo, "rb") as obj_arquivo:
             player = pickle.load(obj_arquivo)
+            print('Jogo carregado com sucesso')
             return player
-            print('Jogo salvo com sucesso')
-    except Exception as error:
-        print('Erro ao Carregar o jogo')
-        print(error)
+    except FileNotFoundError:
+        print('Jogo não encontrado')
 
 
 if __name__ == "__main__":
@@ -57,23 +56,27 @@ if __name__ == "__main__":
     print('Seja bem vindo ao PXG')
     print('-------------------------------------')
 
-    nome = input('Digite seu nome:')
-    player = Player(nome)
-    print(f'{nome} parabens, esse é o mundo dos pokemons, voce tera que explorar'
-          f' e se tornar o mestre dos pokemons')
-    player.mostra_dinheiro()
+    player = carregar_jogo()
 
-    print('Capture o maximo de pokemons que conseguir')
-    if player.pokemons:
-        print('Vi que voce ja possui pokemon')
-        player.mostrar_pokemon()
-    else:
-        print('Voce n possui pokemon agora voce podera escolher um')
-        escolher_pokemon(player)
+    if not player:
+        nome = input('Digite seu nome:')
+        player = Player(nome)
+        print(f'{nome} parabens, esse é o mundo dos pokemons, voce tera que explorar'
+              f' e se tornar o mestre dos pokemons')
+        player.mostra_dinheiro()
 
-    print('Pronto, agora que vc possui um pokemon tera que lutar contra Gary seu amigo de infancia')
-    gary = Inimigo('Gary', [PokemonAgua('squirtle', 1)])
-    player.batalhar(gary)
+        print('Capture o maximo de pokemons que conseguir')
+        if player.pokemons:
+            print('Vi que voce ja possui pokemon')
+            player.mostrar_pokemon()
+        else:
+            print('Voce n possui pokemon agora voce podera escolher um')
+            escolher_pokemon(player)
+
+        print('Pronto, agora que vc possui um pokemon tera que lutar contra Gary seu amigo de infancia')
+        gary = Inimigo('Gary', [PokemonAgua('squirtle', 1)])
+        player.batalhar(gary)
+        salvar_jogo(player)
 
     while True:
         print('--------------------------')
@@ -88,7 +91,7 @@ if __name__ == "__main__":
         escolha = input('Escolha:')
 
         if escolha == '0':
-            print('Fecando o jogo...')
+            print('Fechando o jogo...')
             break
         elif escolha == '1':
             player.exlorar()
@@ -102,7 +105,7 @@ if __name__ == "__main__":
         elif escolha == '5':
             salvar_jogo(player)
         elif escolha == '6':
-            carregar_jogo(player)
+            carregar_jogo()
         else:
             print('Escolha invalida')
 
